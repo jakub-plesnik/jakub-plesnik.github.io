@@ -5,7 +5,6 @@ h2 {
 
 body {
 	margin-bottom: 10vh;
-	margin-top: 10vh;
 }
 
 #pastebin {
@@ -27,7 +26,17 @@ body {
 	width: 100%;
 }
 
+.logo-separator {
+	border-right: 2px solid black;
+}
+
+.nav-button {
+	font-size: 28px;
+	text-decoration: none;
+}
+
 .main-wrapper {
+	margin-top: 1vw;
 	margin-left: 3vw;
 	margin-right: 3vw;
 }
@@ -46,19 +55,12 @@ body {
 	width: 100%;
 }
 
+.semi-bold {
+	font-weight: bold;
+}
+
 @media (prefers-color-scheme: dark) {
-	body {
-		background-color: #222;
-		color: white;
-	}
-	code {
-		color: #ff7a9c;
-		background-color: #0e0609;
-	}
-	a {
-		color: #8fcbff;
-	}
-	#output {
-		color: white;
+	.logo-separator {
+		border-color: white;
 	}
 }
