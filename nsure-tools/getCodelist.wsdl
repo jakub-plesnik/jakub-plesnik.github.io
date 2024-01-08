@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sch="http://csobpoistovna.sk/serviceLayer/b2b/soap" xmlns:tns="http://csobpoistovna.sk/serviceLayer/b2b/soap" targetNamespace="http://csobpoistovna.sk/serviceLayer/b2b/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns="http://csobpoistovna.sk/serviceLayer/b2b/soap" elementFormDefault="qualified" targetNamespace="http://csobpoistovna.sk/serviceLayer/b2b/soap" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="getCodelistPoziadavka">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="product" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ziskatel" type="xs:integer" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ziskatel2" type="xs:string" />
+          </xs:all>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getCodelistOdpoved">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:ciselnik" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element id="ciselnik" name="ciselnik">
+        <xs:complexType>
+          <xs:all>
+            <xs:element minOccurs="0" maxOccurs="1" name="nazov" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="hodnoty">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="unbounded" name="hodnota">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="id" type="xs:string" />
+                        <xs:element name="nazov" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="popis" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:ciselnik" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:all>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getCodelistPoziadavka">
+    <wsdl:part name="getCodelistPoziadavka" element="tns:getCodelistPoziadavka" />
+  </wsdl:message>
+  <wsdl:message name="getCodelistOdpoved">
+    <wsdl:part name="getCodelistOdpoved" element="tns:getCodelistOdpoved" />
+  </wsdl:message>
+  <wsdl:portType name="GetCodelistPort">
+    <wsdl:operation name="getCodelist">
+      <wsdl:input name="getCodelistPoziadavka" message="tns:getCodelistPoziadavka" />
+      <wsdl:output name="getCodelistOdpoved" message="tns:getCodelistOdpoved" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GetCodelistPortSoap11" type="tns:GetCodelistPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getCodelist">
+      <soap:operation soapAction="" />
+      <wsdl:input name="getCodelistPoziadavka">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCodelistOdpoved">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GetCodelistPortService">
+    <wsdl:port name="GetCodelistPortSoap11" binding="tns:GetCodelistPortSoap11">
+      <soap:address location="https://iws.csobpoistovna.sk:8443/service-integration/soapws" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
