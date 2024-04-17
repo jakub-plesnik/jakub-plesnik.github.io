@@ -2,14 +2,21 @@
 	"use strict";
 
 	// Init vars
-	var settingEnableConvertValue = localStorage.getItem("settingEnableConvertValue") ?? "true";
-	var settingFixSpacesValue = localStorage.getItem("settingFixSpacesValue") ?? "true";
-	var settingEurToSymbolValue = localStorage.getItem("settingEurToSymbolValue") ?? "true";
-	var settingAddNbspValue = localStorage.getItem("settingFixNbspValue") ?? "true";
+	var settingEnableConvertValue =
+		localStorage.getItem("settingEnableConvertValue") ?? "true";
+	var settingFixSpacesValue =
+		localStorage.getItem("settingFixSpacesValue") ?? "true";
+	var settingEurToSymbolValue =
+		localStorage.getItem("settingEurToSymbolValue") ?? "true";
+	var settingAddNbspValue =
+		localStorage.getItem("settingFixNbspValue") ?? "true";
 
-	var settingLineBreakText = localStorage.getItem("settingLineBreakText") ?? "<br>";
-	var settingBoldTextStart = localStorage.getItem("settingBoldTextStart") ?? "<strong>";
-	var settingBoldTextEnd = localStorage.getItem("settingBoldTextEnd") ?? "</strong>";
+	var settingLineBreakText =
+		localStorage.getItem("settingLineBreakText") ?? "<br>";
+	var settingBoldTextStart =
+		localStorage.getItem("settingBoldTextStart") ?? "<strong>";
+	var settingBoldTextEnd =
+		localStorage.getItem("settingBoldTextEnd") ?? "</strong>";
 
 	var replaceTextToHtml = function (str) {
 		str = str
@@ -34,13 +41,21 @@
 				/<span[^>]*style="[^"]*font-weight:\s*bolder;[^"]*"[^>]*>(.*?)<\/span>/g,
 				settingBoldTextStart + "$1" + settingBoldTextEnd
 			)
-			.replace(/<span[^>]*style="[^"]*font-weight:\s*normal;[^"]*"[^>]*>(.*?)<\/span>/g, "$1")
+			.replace(
+				/<span[^>]*style="[^"]*font-weight:\s*normal;[^"]*"[^>]*>(.*?)<\/span>/g,
+				"$1"
+			)
 			.replace(/<span(?! class="semi-bold")[^>]*>(.*?)<\/span>/g, "$1")
 			.replace(/<span(?! class=\\"semi-bold\\")[^>]*>(.*?)<\/span>/g, "$1")
 			.replace(/(\ )(<br>)/g, "$2")
 			.replace(/<br><br class="Apple-interchange-newline"><br>/g, "")
 			.replace(/<br class="Apple-interchange-newline"><br>/g, "")
 			.replace(/<br class="Apple-interchange-newline">/g, "");
+
+		str = str
+			.replace(/<([a-z][a-z0-9]*)[^>]*?(\/?)>/gi, "<$1>")
+			.replace(/<p>/g, "")
+			.replace(/<\/p>/g, settingLineBreakText);
 
 		if (settingFixSpacesValue) {
 			str = str
@@ -106,7 +121,8 @@
 			setTimeout(function () {
 				var html = pastebin.innerHTML;
 				console.log(settingEnableConvertValue);
-				var replacedText = settingEnableConvertValue == "true" ? convert(html) : html;
+				var replacedText =
+					settingEnableConvertValue == "true" ? convert(html) : html;
 				insert(output, replacedText);
 				output.focus();
 				output.select();
@@ -122,16 +138,23 @@
 		});
 
 		// Settings - Convert on paste
-		var settingEnableConvertInput = document.querySelector("#settingEnableConvertCheck");
+		var settingEnableConvertInput = document.querySelector(
+			"#settingEnableConvertCheck"
+		);
 		settingEnableConvertInput.checked = settingEnableConvertValue == "true";
 		settingEnableConvertInput.addEventListener("change", function () {
 			settingEnableConvertValue = settingEnableConvertInput.checked;
-			localStorage.setItem("settingEnableConvertValue", settingEnableConvertValue);
+			localStorage.setItem(
+				"settingEnableConvertValue",
+				settingEnableConvertValue
+			);
 			clearInputs();
 		});
 
 		// Settings - Fix spaces for units
-		var settingFixSpacesInput = document.querySelector("#settingFixSpacesCheck");
+		var settingFixSpacesInput = document.querySelector(
+			"#settingFixSpacesCheck"
+		);
 		settingFixSpacesInput.checked = settingFixSpacesValue == "true";
 		settingFixSpacesInput.addEventListener("change", function () {
 			settingFixSpacesValue = settingFixSpacesInput.checked;
@@ -140,7 +163,9 @@
 		});
 
 		// Settings - EUR to €
-		var settingEurToSymbolInput = document.querySelector("#settingEurToSymbolCheck");
+		var settingEurToSymbolInput = document.querySelector(
+			"#settingEurToSymbolCheck"
+		);
 		settingEurToSymbolInput.checked = settingEurToSymbolValue == "true";
 		settingEurToSymbolInput.addEventListener("change", function () {
 			settingEurToSymbolValue = settingEurToSymbolInput.checked;
@@ -159,22 +184,35 @@
 
 		// Settings - Line break
 		var settingLineBreakSelect = document.querySelector("#settingBrSelect");
-		settingLineBreakSelect.value = localStorage.getItem("settingLineBreakValue") ?? 1;
-		settingLineBreakText = settingLineBreakSelect.options[settingLineBreakSelect.selectedIndex].text;
+		settingLineBreakSelect.value =
+			localStorage.getItem("settingLineBreakValue") ?? 1;
+		settingLineBreakText =
+			settingLineBreakSelect.options[settingLineBreakSelect.selectedIndex].text;
 		settingLineBreakSelect.addEventListener("change", function () {
-			settingLineBreakText = settingLineBreakSelect.options[settingLineBreakSelect.selectedIndex].text;
-			localStorage.setItem("settingLineBreakValue", settingLineBreakSelect.value);
+			settingLineBreakText =
+				settingLineBreakSelect.options[settingLineBreakSelect.selectedIndex]
+					.text;
+			localStorage.setItem(
+				"settingLineBreakValue",
+				settingLineBreakSelect.value
+			);
 			clearInputs();
 		});
 
 		// Settings - Bold text
 		var settingBoldSelect = document.querySelector("#settingBoldSelect");
 		settingBoldSelect.value = localStorage.getItem("settingBoldValue") ?? 1;
-		var selectedText = settingBoldSelect.options[settingBoldSelect.selectedIndex].text.split("TEXT");
+		var selectedText =
+			settingBoldSelect.options[settingBoldSelect.selectedIndex].text.split(
+				"TEXT"
+			);
 		settingBoldTextStart = selectedText[0];
 		settingBoldTextEnd = selectedText[1];
 		settingBoldSelect.addEventListener("change", function () {
-			var selectedText = settingBoldSelect.options[settingBoldSelect.selectedIndex].text.split("TEXT");
+			var selectedText =
+				settingBoldSelect.options[settingBoldSelect.selectedIndex].text.split(
+					"TEXT"
+				);
 			settingBoldTextStart = selectedText[0];
 			settingBoldTextEnd = selectedText[1];
 			localStorage.setItem("settingBoldValue", settingBoldSelect.value);
